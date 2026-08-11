@@ -1,23 +1,29 @@
 export type StationStatus = "active" | "abandoned" | "independent" | "captured" | "destroyed";
 export type ConnectionType = "metro" | "tunnel" | "bridge" | "surface";
 export type HazardType = "radiation" | "biohazard" | "mental" | "collapse" | "mutants" | "cult" | "other";
+export type SupportedLanguage = "es" | "en";
+
+export interface LocalizedText {
+  es: string;
+  en: string;
+}
 
 export interface Station {
   id: string;
-  name: string;
+  name: LocalizedText;
   x: number;
   y: number;
   lineIds: string[];
   factionId?: string;
   status: StationStatus;
-  description?: string;
+  description?: LocalizedText;
   population?: number;
   labelPosition?: "top" | "bottom" | "left" | "right";
 }
 
 export interface MetroLine {
   id: string;
-  name: string;
+  name: LocalizedText;
   color: string;
   path: string;
 }
@@ -33,9 +39,9 @@ export interface Connection {
 
 export interface Faction {
   id: string;
-  name: string;
+  name: LocalizedText;
   color: string;
-  description?: string;
+  description?: LocalizedText;
 }
 
 export interface Hazard {
@@ -43,6 +49,6 @@ export interface Hazard {
   type: HazardType;
   x: number;
   y: number;
-  title: string;
-  description?: string;
+  title: LocalizedText;
+  description?: LocalizedText;
 }

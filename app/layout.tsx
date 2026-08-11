@@ -13,14 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Metro // 2033 | Underground Cartography",
-  description: "Interactive schematic map of the Moscow Metro after dark.",
+  title: "Metro // 2033 | Cartografía subterránea",
+  description: "Mapa esquemático interactivo del Metro de Moscú después del anochecer.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
+      lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

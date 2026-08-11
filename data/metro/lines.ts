@@ -1,8 +1,12 @@
 import type { MetroLine } from "@/types/metro";
 
+const text = (es: string, en: string) => ({ es, en });
+
 export const lines: MetroLine[] = [
-  { id: "ring", name: "The Ring", color: "#d19a45", path: "M 260 220 C 360 120 560 100 760 170 C 930 230 990 420 900 560 C 780 680 500 690 310 560 C 190 470 160 310 260 220" },
-  { id: "red", name: "Red Line", color: "#d45252", path: "M 110 550 C 270 500 350 430 440 350 C 530 265 620 205 735 170 C 830 140 920 125 1060 105" },
-  { id: "green", name: "Emerald Line", color: "#62a879", path: "M 260 220 C 310 300 350 375 440 350 C 560 315 620 390 690 475 C 750 550 850 575 1020 535" },
-  { id: "blue", name: "Blue Line", color: "#5d91c7", path: "M 205 155 C 350 210 430 275 440 350 C 455 455 525 535 625 575 C 745 625 835 610 900 560" },
+  { id: "sokolnicheskaya", name: text("Sokolnicheskaya", "Sokolnicheskaya"), color: "#d45252", path: "M 470 650 C 480 560 505 470 545 395 C 585 320 620 250 620 175 C 620 125 600 90 575 58" },
+  { id: "zamoskvoretskaya", name: text("Zamoskvoretskaya", "Zamoskvoretskaya"), color: "#62a879", path: "M 140 200 C 250 210 365 245 465 300 C 550 345 640 375 755 405 C 815 420 860 440 910 465" },
+  { id: "arbatsko-pokrovskaya", name: text("Arbatsko-Pokrovskaya", "Arbatsko-Pokrovskaya"), color: "#5d91c7", path: "M 150 120 C 270 180 390 250 510 330 C 590 385 675 420 780 480" },
+  { id: "koltsevaya", name: text("Kol'tsevaya", "Circle Line"), color: "#8a706b", path: "M 350 285 C 405 205 505 165 610 170 C 730 175 820 225 850 330 C 880 440 820 530 715 565 C 595 600 465 570 390 490 C 330 425 315 350 350 285" },
+  { id: "tagansko-krasnopresnenskaya", name: text("Tagansko-Krasnopresnenskaya", "Tagansko-Krasnopresnenskaya"), color: "#9a6b9a", path: "M 95 450 C 220 425 335 400 450 385 C 555 370 665 430 770 505 C 845 555 940 600 1050 625" },
+  { id: "kaluzhsko-rizhskaya", name: text("Kaluzhsko-Rizhskaya", "Kaluzhsko-Rizhskaya"), color: "#d49745", path: "M 575 58 C 660 105 715 175 720 255 C 725 340 690 420 665 500 C 640 575 640 660 700 720" },
 ];

@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import type { Connection, Faction, Hazard, MetroLine, Station } from "@/types/metro";
+import type { Connection, Faction, Hazard, MetroLine, Station, SupportedLanguage } from "@/types/metro";
+import { localizedText } from "@/lib/metro/i18n";
 
 type MetroMapProps = {
   stations: Station[];
@@ -17,11 +18,12 @@ type MetroMapProps = {
   onSelectStation: (station: Station) => void;
   onSelectHazard: (hazard: Hazard) => void;
   onZoomReady: (zoomIn: () => void, zoomOut: () => void, reset: () => void, focus: (station: Station) => void) => void;
+  language: SupportedLanguage;
 };
 
 const hazardGlyph: Record<Hazard["type"], string> = { radiation: "☢", biohazard: "✣", mental: "◉", collapse: "⌁", mutants: "♠", cult: "✦", other: "!" };
 
-export function MetroMap({ stations, lines, connections, factions, hazards, visibleFactions, showHazards, selectedId, route, onSelectStation, onSelectHazard, onZoomReady }: MetroMapProps) {
+export function MetroMap({ stations, lines, connections, factions, hazards, visibleFactions, showHazards, selectedId, route, onSelectStation, onSelectHazard, onZoomReady, language }: MetroMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const viewportRef = useRef<SVGGElement>(null);
 
@@ -69,9 +71,9 @@ export function MetroMap({ stations, lines, connections, factions, hazards, visi
         <g className="connections-layer">
           {connections.map((connection) => { const from = stationMap.get(connection.from); const to = stationMap.get(connection.to); if (!from || !to) return null; const routeActive = routeConnectionIds.has(connection.id) || routeConnectionIds.has(`${connection.to}-${connection.from}`); return <line key={connection.id} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={lines.find((line) => line.id === connection.lineId)?.color} className={`connection-line ${connection.dangerous ? "dangerous" : ""} ${route.length && !routeActive ? "route-muted" : ""} ${routeActive ? "route-active" : ""}`} />; })}
         </g>
-        {showHazards && <g className="hazards-layer">{hazards.map((hazard) => <g key={hazard.id} className="hazard-mark" transform={`translate(${hazard.x} ${hazard.y})`} onClick={() => onSelectHazard(hazard)} role="button" tabIndex={0} aria-label={`Hazard: ${hazard.title}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") onSelectHazard(hazard); }}><circle r="17" /><text textAnchor="middle" dy="6">{hazardGlyph[hazard.type]}</text><title>{hazard.title}</title></g>)}</g>}
+        {showHazards && <g className="hazards-layer">{hazards.map((hazard) => <g key={hazard.id} className="hazard-mark" transform={`translate(${hazard.x} ${hazard.y})`} onClick={() => onSelectHazard(hazard)} role="button" tabIndex={0} aria-label={`${language === "es" ? "Peligro" : "Hazard"}: ${localizedText(hazard.title, language)}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") onSelectHazard(hazard); }}><circle r="17" /><text textAnchor="middle" dy="6">{hazardGlyph[hazard.type]}</text><title>{localizedText(hazard.title, language)}</title></g>)}</g>}
         <g className="stations-layer">
-          {stations.map((station) => { const visible = !station.factionId || visibleFactions.has(station.factionId); const isRoute = routeIds.has(station.id); const isSelected = selectedId === station.id; return <g key={station.id} className={`station ${visible ? "" : "faction-muted"} ${isSelected ? "selected" : ""} ${isRoute ? "route-station" : ""}`} transform={`translate(${station.x} ${station.y})`} onClick={() => onSelectStation(station)} role="button" tabIndex={0} aria-label={`Station ${station.name}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") onSelectStation(station); }}><circle className="station-halo" r={isSelected || isRoute ? 15 : 11} fill={factionColor(station.factionId)} /><circle className="station-core" r="5" /><title>{`${station.name} · ${station.status}`}</title><text className={`station-label label-${station.labelPosition ?? "bottom"}`} x={station.labelPosition === "left" ? -17 : station.labelPosition === "right" ? 17 : 0} y={station.labelPosition === "top" ? -17 : station.labelPosition === "bottom" ? 25 : 5} textAnchor={station.labelPosition === "left" ? "end" : station.labelPosition === "right" ? "start" : "middle"}>{station.name}</text></g>; })}
+          {stations.map((station) => { const visible = !station.factionId || visibleFactions.has(station.factionId); const isRoute = routeIds.has(station.id); const isSelected = selectedId === station.id; const stationName = localizedText(station.name, language); return <g key={station.id} className={`station ${visible ? "" : "faction-muted"} ${isSelected ? "selected" : ""} ${isRoute ? "route-station" : ""}`} transform={`translate(${station.x} ${station.y})`} onClick={() => onSelectStation(station)} role="button" tabIndex={0} aria-label={`${language === "es" ? "Estación" : "Station"} ${stationName}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") onSelectStation(station); }}><circle className="station-halo" r={isSelected || isRoute ? 15 : 11} fill={factionColor(station.factionId)} /><circle className="station-core" r="5" /><title>{`${stationName} · ${station.status}`}</title><text className={`station-label label-${station.labelPosition ?? "bottom"}`} x={station.labelPosition === "left" ? -17 : station.labelPosition === "right" ? 17 : 0} y={station.labelPosition === "top" ? -17 : station.labelPosition === "bottom" ? 25 : 5} textAnchor={station.labelPosition === "left" ? "end" : station.labelPosition === "right" ? "start" : "middle"}>{stationName}</text></g>; })}
         </g>
         <g className="labels-layer"><text x="70" y="110" className="map-caption">MOSCOW // UNDERGROUND NETWORK</text><text x="1130" y="665" className="map-coordinates">55°45′N · 37°37′E</text></g>
       </g>

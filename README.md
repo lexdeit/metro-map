@@ -7,6 +7,9 @@ color tokens, component conventions and SVG guidelines are documented in
 [`docs/ui-style.md`](./docs/ui-style.md). Read that guide before extending the
 Metro interface.
 
+The provenance, fictional-data boundary, localization model and station-data
+maintenance rules are documented in [`docs/metro-data.md`](./docs/metro-data.md).
+
 ## Getting Started
 
 First, run the development server:
