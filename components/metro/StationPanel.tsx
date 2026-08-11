@@ -1,0 +1,8 @@
+import type { Faction, Station } from "@/types/metro";
+
+type StationPanelProps = { station?: Station; faction?: Faction; connections: Station[]; onClose: () => void; onRoute: () => void };
+
+export function StationPanel({ station, faction, connections, onClose, onRoute }: StationPanelProps) {
+  if (!station) return null;
+  return <aside className="station-panel" aria-label="Station details"><div className="panel-kicker"><span>FIELD RECORD // 07</span><button className="icon-button" onClick={onClose} aria-label="Close station panel">×</button></div><div className="station-heading"><span className="station-status-dot" style={{ backgroundColor: faction?.color ?? "#9aa0a8" }} /><div><h2>{station.name}</h2><p>{faction?.name ?? "Independent"}</p></div></div><div className="panel-rule" /><div className="detail-grid"><div><span className="detail-label">STATUS</span><strong className={`status-${station.status}`}>{station.status}</strong></div><div><span className="detail-label">POPULATION</span><strong>{station.population ? station.population.toLocaleString("en-US") : "—"}</strong></div></div><div className="detail-block"><span className="detail-label">LINES</span><div className="line-pills">{station.lineIds.map((lineId) => <span key={lineId}>{lineId}</span>)}</div></div><div className="detail-block"><span className="detail-label">CONNECTED STATIONS</span><ul className="connection-list">{connections.length ? connections.map((connection) => <li key={connection.id}>{connection.name}<span>↗</span></li>) : <li className="muted">No mapped connections</li>}</ul></div><p className="station-description">{station.description}</p><button className="route-button" onClick={onRoute}>SET AS ROUTE ORIGIN <span>→</span></button></aside>;
+}
