@@ -63,13 +63,13 @@ export function MetroMap({ stations, lines, connections, factions, hazards, visi
         <rect width="1200" height="760" fill="url(#grid)" />
         <path d="M 55 80 L 1135 80 L 1135 685 L 55 685 Z" fill="none" stroke="#34414a" strokeDasharray="3 12" />
         <g className="tunnels-layer">
-          {connections.map((connection) => { const from = stationMap.get(connection.from); const to = stationMap.get(connection.to); if (!from || !to) return null; return <line key={`tunnel-${connection.id}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} className="tunnel-line" />; })}
+          {connections.map((connection) => { const from = stationMap.get(connection.from); const to = stationMap.get(connection.to); const line = lines.find((item) => item.id === connection.lineId); if (!from || !to) return null; return <line key={`tunnel-${connection.id}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} className={`tunnel-line ${line?.isRing ? "ring-tunnel" : ""}`} />; })}
         </g>
         <g className="lines-layer">
           {lines.map((line) => <path key={line.id} d={line.path} fill="none" stroke={line.color} className="metro-line" />)}
         </g>
         <g className="connections-layer">
-          {connections.map((connection) => { const from = stationMap.get(connection.from); const to = stationMap.get(connection.to); if (!from || !to) return null; const routeActive = routeConnectionIds.has(connection.id) || routeConnectionIds.has(`${connection.to}-${connection.from}`); return <line key={connection.id} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={lines.find((line) => line.id === connection.lineId)?.color} className={`connection-line ${connection.dangerous ? "dangerous" : ""} ${route.length && !routeActive ? "route-muted" : ""} ${routeActive ? "route-active" : ""}`} />; })}
+          {connections.map((connection) => { const from = stationMap.get(connection.from); const to = stationMap.get(connection.to); const line = lines.find((item) => item.id === connection.lineId); if (!from || !to) return null; const routeActive = routeConnectionIds.has(connection.id) || routeConnectionIds.has(`${connection.to}-${connection.from}`); return <line key={connection.id} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={line?.color} className={`connection-line ${line?.isRing ? "ring-connection" : ""} ${connection.dangerous ? "dangerous" : ""} ${route.length && !routeActive ? "route-muted" : ""} ${routeActive ? "route-active" : ""}`} />; })}
         </g>
         {showHazards && <g className="hazards-layer">{hazards.map((hazard) => <g key={hazard.id} className="hazard-mark" transform={`translate(${hazard.x} ${hazard.y})`} onClick={() => onSelectHazard(hazard)} role="button" tabIndex={0} aria-label={`${language === "es" ? "Peligro" : "Hazard"}: ${localizedText(hazard.title, language)}`} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") onSelectHazard(hazard); }}><circle r="17" /><text textAnchor="middle" dy="6">{hazardGlyph[hazard.type]}</text><title>{localizedText(hazard.title, language)}</title></g>)}</g>}
         <g className="stations-layer">

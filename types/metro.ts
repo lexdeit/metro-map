@@ -19,6 +19,7 @@ export interface Station {
   description?: LocalizedText;
   population?: number;
   labelPosition?: "top" | "bottom" | "left" | "right";
+  isTransfer?: boolean;
 }
 
 export interface MetroLine {
@@ -26,6 +27,8 @@ export interface MetroLine {
   name: LocalizedText;
   color: string;
   path: string;
+  number?: number;
+  isRing?: boolean;
 }
 
 export interface Connection {

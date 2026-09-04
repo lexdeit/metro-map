@@ -1,4 +1,5 @@
 import type { Connection } from "@/types/metro";
+import { stations } from "@/data/metro/stations";
 
 const sequences: Record<string, string[]> = {
   sokolnicheskaya: ["sokolniki", "krasnoselskaya", "komsomolskaya", "krasnye-vorota", "chistye-prudy", "lubyanka", "okhotny-ryad", "biblioteka", "kropotkinskaya", "park-kultury"],
